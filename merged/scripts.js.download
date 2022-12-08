@@ -1,0 +1,958 @@
+/*!
+    * Start Bootstrap - Freelancer v6.0.0 (https://startbootstrap.com/themes/freelancer)
+    * Copyright 2013-2020 Start Bootstrap
+    * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-freelancer/blob/master/LICENSE)
+    */
+(function($) {
+  "use strict"; // Start of use strict
+
+  // Smooth scrolling using jQuery easing
+  $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        $('html, body').animate({
+          scrollTop: (target.offset().top - 71)
+        }, 1000, "easeInOutExpo");
+        return false;
+      }
+    }
+  });
+
+  // Scroll to top button appear
+  $(document).scroll(function() {
+    var scrollDistance = $(this).scrollTop();
+    if (scrollDistance > 100) {
+      $('.scroll-to-top').fadeIn();
+    } else {
+      $('.scroll-to-top').fadeOut();
+    }
+  });
+
+  // Closes responsive menu when a scroll trigger link is clicked
+  $('.js-scroll-trigger').click(function() {
+    $('.navbar-collapse').collapse('hide');
+  });
+
+  // Activate scrollspy to add active class to navbar items on scroll
+  $('body').scrollspy({
+    target: '#mainNav',
+    offset: 80
+  });
+
+  // Collapse Navbar
+  var navbarCollapse = function() {
+    if ($("#mainNav").offset().top > 100) {
+      $("#mainNav").addClass("navbar-shrink");
+    } else {
+      $("#mainNav").removeClass("navbar-shrink");
+    }
+  };
+  // Collapse now if page is not at top
+  navbarCollapse();
+  // Collapse the navbar when page is scrolled
+  $(window).scroll(navbarCollapse);
+
+  // Floating label headings for the contact form
+  $(function() {
+    $("body").on("input propertychange", ".floating-label-form-group", function(e) {
+      $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
+    }).on("focus", ".floating-label-form-group", function() {
+      $(this).addClass("floating-label-form-group-with-focus");
+    }).on("blur", ".floating-label-form-group", function() {
+      $(this).removeClass("floating-label-form-group-with-focus");
+    });
+  });
+
+})(jQuery); // End of use strict
+
+
+
+function voteupdatr(e) {
+
+var vote_id =(event.target.id);
+var action = ( event.target.name);
+var voter = $(event.target).attr('voter');
+
+//alert('vote_id= '+vote_id+" action="+action+" voter="+voter);
+
+$.ajax({
+type: "GET",
+data: "voter="+voter+"&action="+action+"&vote_id="+vote_id,
+url: "regvote.php",
+
+success: function(msg)
+{
+$("#votecount"+vote_id).fadeOut(400);
+$("#votecount"+vote_id).parent().html(msg).fadeIn(800);
+$( "button" ).remove( ".votey"+vote_id );
+
+} 		});
+}
+
+function gotouser(e) {
+  //alert('FUCK YOU');
+  var userid = $(event.target).attr('user');
+  //alert("userid="+userid);
+  
+  window.location.assign('?view=user&userid='+userid);
+  }
+
+
+
+  function gotopost(e) {
+    //alert('FUCK YOU');
+    var postid = $(event.target).attr('postid');
+   // alert("postid="+postid);
+    
+    window.location.assign('?view=post&postid='+postid);
+    }
+
+    
+
+
+
+    
+
+function updatr(e) {
+//alert('FUCK YOU');
+//$(event.target).prev('input').width("100%");
+//updated to use parentype to tell whether button connects to input or textarea
+//so I can use the same routine for both jobs
+var the_id = (event.target.id);//get the id
+var parenttype = $(event.target).attr('pt'); //alert(parenttype);
+var table = $(parenttype+the_id).attr('table');
+// var table = $("input[id^='"+the_id+"']'").attr('table');
+var row = $(parenttype+the_id).attr('row');
+var type = $(parenttype+the_id).attr('name');
+var name = $(parenttype+the_id).attr('name');
+var type2 = $(parenttype+the_id).attr('type');
+var uid = $(parenttype+the_id).attr('uid');
+//var uid = $(event.target).prev('input').attr('uid');
+var value = $(parenttype+the_id).val();
+//var cock = $(event.target).attr('text'); //alert(cock);
+var userid = $(parenttype+the_id).attr('userid');
+var personid = $(parenttype+the_id).attr('personid');
+//var userid = "<?php echo $_SESSION['user']['id'];?>";
+//var personid = "<?php echo $personid; ?>";
+
+//$colorDiv = $(event.target);
+//ln = colors.length;
+var $colorDiv = $(event.target).prev('input');
+var highlight = $colorDiv.data("index");
+//var highlight = $(event.target).data("index");
+
+
+//alert("postid="+the_id+"&event="+type+"&type2="+type2+"&name="+name+"&value="+value+"&userid="+userid+"&personid="+personid+"&table="+table+"&highlight="+highlight+"&row="+row+"&uid="+uid);
+
+
+
+
+
+ $.ajax({
+   type: "GET",
+   data: "postid="+the_id+"&event="+type+"&value="+value+"&userid="+userid+"&personid="+personid+"&table="+table+"&highlight="+highlight+"&row="+row+"&uid="+uid,
+
+   url: "private/updatefield.php",
+   success: function(newvalue)
+   {
+
+//$("#new").prop('id', newvalue); //this is a little more elegant
+
+$( "#db"+type ).load(window.location.href + " #db"+type );
+$("button#"+the_id).hide();
+
+   } 		});
+}
+
+
+
+  function buttonshow(e)
+{
+  var the_id = (event.target.id);
+
+$("button#"+the_id).show();
+
+
+}
+
+
+function commentr(e) {
+// alert('FUCK YOU');
+
+ //updated to use parentype to tell whether button connects to input or textarea
+ //so I can use the same routine for both jobs
+ var the_id = (event.target.id);//get the id
+ var parenttype = $(event.target).attr('pt'); //alert(parenttype);
+ var table = $(parenttype+the_id).attr('table');
+ var row = $(parenttype+the_id).attr('row');
+ var type = $(parenttype+the_id).attr('name');
+ var name = $(parenttype+the_id).attr('name');
+ var type2 = $(parenttype+the_id).attr('type');
+ var childof = $(parenttype+the_id).attr('childof');
+ var uid = $(event.target).prev('input').attr('uid');
+ var value = $(parenttype+the_id).val();
+ //var cock = $(event.target).attr('text'); //alert(cock);
+ var userid = $(parenttype+the_id).attr('userid');
+ var personid = $(parenttype+the_id).attr('personid');
+ var post = $(parenttype+the_id).attr('post');
+ //var userid = "<?php echo $_SESSION['user']['id'];?>";
+ //var personid = "<?php echo $personid; ?>";
+ 
+ //$colorDiv = $(event.target);
+ //ln = colors.length;
+ var $colorDiv = $(event.target).prev('input');
+ var highlight = $colorDiv.data("index");
+ //var highlight = $(event.target).data("index");
+ 
+ 
+ //alert("postid="+the_id+"&parenttype="+parenttype+"&event="+type+"&type2="+type2+"&name="+name+"&value="+value+"&userid="+userid+"&personid="+personid+"&table="+table+"&highlight="+highlight+"&row="+row+"&uid="+uid+"&childof="+childof+"&post="+post);
+ //alert('FUCK ID = '+the_id);
+ 
+ 
+ 
+ 
+  $.ajax({
+    type: "GET",
+    data: "postid="+the_id+"&event="+type+"&value="+value+"&userid="+userid+"&personid="+personid+"&table="+table+"&highlight="+highlight+"&row="+row+"&uid="+uid+"&childof="+childof+"&post="+post,
+ 
+    url: "private/submitcomment.php",
+    success: function(newvalue)
+    {
+ 
+ //$("#new").prop('id', newvalue); //this is a little more elegant
+ 
+ $( "#db"+the_id ).load(window.location.href + " #db"+the_id );
+ //$( "#fuckyou"+the_id ).load(window.location.href + " #fuckyou"+the_id );
+ $("button#"+the_id).hide();
+ 
+    } 		});
+ }
+ 
+
+
+
+
+
+
+ function hidr(e) {
+  //alert('FUCK YOU!!!');
+  
+   var the_id = (event.target.id);//get the id
+  var moderator = $('button#'+the_id).attr('moderator');
+  var hiddn = $('button#'+the_id).attr('hiddn');  if (hiddn != 0){moderator=0; alert("hidden wasn't 0");}
+//    $('input#'+the_id).attr('row');
+   
+   //alert("postid="+the_id+"&moderator="+moderator+"&hidden="+hiddn);
+       
+    $.ajax({
+      type: "GET",
+      data: "postid="+the_id+"&moderator="+moderator,
+  
+      url: "private/hidepost.php",
+      success: function(newvalue)
+      {
+   
+   //$("#new").prop('id', newvalue); //this is a little more elegant
+   
+   $( "#db"+the_id ).load(window.location.href + " #db"+the_id );
+   $("button#"+the_id).hide();
+   
+      } 		});
+   }
+
+/*
+//HA HA THIS IS NOT GOING TO BE THE BREEZE YOU THOUGHT IT WAS.
+// NEED TO EDIT ON A SEPARATE PAGE WITH THAT SHOWS CODE FOR HTML POSTS
+// NO YOU CAN'T JUST MAKE A TEXT FIELD TO UPDATE SIMPLY.
+   function editr(e) {
+    alert('FUCK YOU!!!');
+    
+     var the_id = (event.target.id);//get the id
+    var uid = $('button#'+the_id).attr('moderator');
+    var editme = $('button#'+the_id).attr('editme');  
+//    $('input#'+the_id).attr('row');
+     
+     alert("postid="+the_id+"&userid="+uid+"&editme="+editme);
+         
+      $.ajax({
+        type: "GET",
+        data: "postid="+the_id+"&uid="+uid+"&editme"+editme,
+    
+        url: "private/submiteditedpost.php",
+        success: function(newvalue)
+        {
+     
+     //$("#new").prop('id', newvalue); //this is a little more elegant
+     
+     $( "#db"+the_id ).load(window.location.href + " #db"+the_id );
+     $("button#"+the_id).hide();
+     
+        } 		});
+     }
+
+     */
+
+
+   function deletr(e) {
+    //alert('FUCK YOU!!!');
+    
+    var the_id = (event.target.id);//get the id separate because more than one button with post id
+    var moderator = $('button#'+the_id).attr('deleter');
+    var deleteme = $('button#'+the_id).attr('delme'); 
+    //alert("DELEME="+deleteme);
+//    $('input#'+the_id).attr('row');
+     
+    // alert("postid="+the_id+"&moderator="+moderator+"&deleteme"+deleteme);
+         
+      $.ajax({
+        type: "GET",
+        data: "postid="+the_id+"&moderator="+moderator+"&deleteme="+deleteme,
+    
+        url: "private/deletepost.php",
+        success: function(newvalue)
+        {
+     
+     //$("#new").prop('id', newvalue); //this is a little more elegant
+     
+     $( "#db"+the_id ).load(window.location.href + " #db"+the_id );
+     $("button#"+the_id).hide();
+     //window.location.href = "index.php?view=posts";
+      
+    window.location.assign('index.php?view=posts');
+     
+        } 		});
+     }
+
+
+
+     /* //WTF IS THIS SHIT DOING HERE?
+   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+*/
+
+
+
+
+
+
+
+
+ function registr(e)
+{
+var formerror=0;
+var name =$('input#username').val();
+var email = $('input#emailaddy').val();
+//var invitee = $('input#emailaddy').val();
+
+alert("username:"+name+" email:"+email);
+if (!name)
+{ //alert the user box
+  formerror ++;
+  $('input#username').css({'border-left': '20px solid #c11'});
+}
+//duplicate user names are fine
+else {$('input#username').css({'border-left': '20px solid #0f0'});}
+if (!isEmail(email) )
+{
+  //alert the email box
+  formerror ++;
+  $('input#emailaddy').css({'border-left': '20px solid #c11'});
+}
+else {
+  $('input#emailaddy').css({'border-left': '20px solid #0f0'});
+}
+if (!formerror)
+{
+  email = encodeURIComponent(email);
+  $.ajax({ type: "GET", data: "email="+email,
+           url: "checkemail.php", success: function(verified)
+    {//alert(verified);
+      if (verified=='in use'){alert('in use already. No register for you');}
+      else
+      {//alert('not in use yet');
+//email=JSON.stringify(email); this didn't do it.
+      $.ajax({ type: "GET", data: "name="+name+"&email="+email,
+               url: "private/processsignup.php", success: function(newvalue)
+        {
+alert(newvalue);
+window.location.href = "index.php?view=user&userid="+newvalue;
+        }
+  });
+
+    }
+  }
+
+  });
+
+
+}
+}
+
+
+
+
+
+
+function refregistr(e)
+{
+var formerror=0;
+//var the_id = (event.target.id);
+var name =$('input#username').val();
+//var email = $('input#emailaddy').val();
+//var email = $('#emailaddy').attr("shit");
+var inviteemail = $("#emailaddy").attr("value");
+
+alert("username:"+name+" iemail="+inviteemail);
+if (!name)
+{ //alert the user box
+  formerror ++;
+  $('input#username').css({'border-left': '20px solid #c11'});
+}
+//duplicate user names are fine?
+else {$('input#username').css({'border-left': '20px solid #0f0'});}
+if (!isEmail(inviteemail) )
+{
+  //alert the email box
+  formerror ++;
+  $('input#emailaddy').css({'border-left': '20px solid #c11'});
+}
+else {
+  $('input#emailaddy').css({'border-left': '20px solid #0f0'});
+}
+if (!formerror)
+{
+  $.ajax({ type: "GET", data: "email="+inviteemail,
+           url: "checkemail.php", success: function(verified)
+    {alert(verified);
+      if (verified=='in use'){alert('in use already. No register for you');}
+      else
+      {alert('not in use yet');
+
+      $.ajax({ type: "GET", data: "name="+name+"&email="+inviteemail,
+               url: "private/processsinvite.php", success: function(newvalue)
+        {
+//alert(newvalue);
+window.location.href = "index.php?view=user&userid="+newvalue;
+        }
+  });
+
+    }
+  }
+
+  });
+
+
+}
+}
+
+
+
+
+
+
+function friendinvitr(e)
+{
+var formerror=0;
+//var the_id = (event.target.id);
+//var name =$('input#username').val();
+var inviteemail = $('input#emailaddy').val();
+//var email = $('#emailaddy').attr("shit");
+var inviter = $("#inviter").attr("value");
+//var inviteemail = $("#emailaddy").attr("value");
+
+alert("inviter:"+inviter+" iemail="+inviteemail);
+if (!inviter)
+{ //alert the user box
+  formerror ++;
+  $('div#inviter').css({'border-left': '20px solid #c11'});
+}
+//duplicate user names are fine?
+else {$('input#inviter').css({'border-left': '20px solid #0f0'});}
+if (!isEmail(inviteemail) )
+{
+  //alert the email box
+  formerror ++;
+  $('input#emailaddy').css({'border-left': '20px solid #c11'});
+}
+else {
+  $('input#emailaddy').css({'border-left': '20px solid #0f0'});
+}
+if (!formerror)
+{
+  $.ajax({ type: "GET", data: "email="+inviteemail,
+           url: "checkemail.php", success: function(verified)
+    {alert(verified);
+      if (verified=='in use'){alert('in use already. No invite for you');}
+      else
+      {alert('not in use yet');
+
+      $.ajax({ type: "GET", data: "inviter="+inviter+"&email="+inviteemail,
+               url: "private/sendinvite.php", success: function(newvalue)
+        {
+//alert(newvalue);
+//window.location.href = "index.php?view=user&userid="+newvalue;
+        }
+  });
+
+    }
+  }
+
+  });
+
+
+}
+}
+
+
+function postr(e) {
+//alert('FUCK YOU!!!');
+
+ //updated to use parentype to tell whether button connects to input or textarea
+ //so I can use the same routine for both jobs
+ var the_id = (event.target.id);//get the id
+ //var parenttype = $(event.target).attr('pt'); //alert(parenttype);
+ //var table = $(parenttype+the_id).attr('table');
+ //var row = $(parenttype+the_id).attr('row');
+ //var type = $(parenttype+the_id).attr('name');
+ //var name = $(parenttype+the_id).attr('name');
+ //var type2 = $(parenttype+the_id).attr('type');
+ //var childof = $(parenttype+the_id).attr('childof');
+ //var uid = $(event.target).prev('input').attr('uid');
+ //var postcats = $(event.target).prev('input').attr('postscats');
+ var postcat = $("#postcats option:selected").val();
+ var postbody = $("#newpost").val();
+ var uid =      $("#newpost").attr('userid');
+ var postwrapping = $('#wrapping').is(":checked")
+ var posttitle = $("#posttitle").val(); alert ("posttitle="+posttitle);if (posttitle.length === 0){posttitle="No Title";}
+ var stickied = $("#stickied").val();
+
+ //var postbody = JSON.stringify(postbody);
+
+ var postbody = encodeURIComponent(postbody);
+// alert('stickied = '+stickied);
+ //alert('checkbox = '+postwrapping);
+ //var value = $(parenttype+the_id).val();
+ //var cock = $(event.target).attr('text'); //alert(cock);
+ //var userid = $(parenttype+the_id).attr('userid');
+ //var personid = $(parenttype+the_id).attr('personid');
+ //var post = $(parenttype+the_id).attr('post');
+ //var userid = "<?php echo $_SESSION['user']['id'];?>";
+ //var personid = "<?php echo $personid; ?>";
+ 
+ //$colorDiv = $(event.target);
+ //ln = colors.length;
+ //var $colorDiv = $(event.target).prev('input');
+ //var highlight = $colorDiv.data("index");
+ //var highlight = $(event.target).data("index");
+ 
+ 
+ //alert("postcat="+postcat+"&postbody="+postbody+"&postid="+the_id+"&uid="+uid+"&posttitle="+posttitle+"&wrapping="+postwrapping+"&stickied="+stickied);
+ 
+ 
+ 
+ 
+ 
+  $.ajax({
+    type: "GET",
+    data: "postcat="+postcat+"&postid="+the_id+"&uid="+uid+"&posttitle="+posttitle+"&wrapping="+postwrapping+"&stickied="+stickied+"&postbody="+postbody,
+
+    url: "private/submitpost.php",
+    success: function(newvalue)
+    {
+ 
+ //$("#new").prop('id', newvalue); //this is a little more elegant
+ 
+ $( "#db"+the_id ).load(window.location.href + " #db"+the_id );
+ $("button#"+the_id).hide();
+ window.location.assign('index.php?view=post&postid='+newvalue);
+    } 		});
+ }
+
+
+
+
+
+
+ function editr(e) {
+  //alert('FUCK YOU!!!');
+  
+   //updated to use parentype to tell whether button connects to input or textarea
+   //so I can use the same routine for both jobs
+   var the_id = (event.target.id);//get the id
+
+   var postcat = $("#postcats option:selected").val();
+   var postbody = $("#postbody").val();
+   //postbody=text.replace("%3Cpre%3E","");
+   var uid =      $("#postbody").attr('userid');
+   var postwrapping = $('#wrapping').is(":checked")
+   var posttitle = $("#posttitle").val(); alert ("posttitle="+posttitle);if (posttitle.length === 0){posttitle="No Title";}
+   var stickied = $("#stickied").val();
+   var stickiedid = $("#stickied").attr('commentid'); 
+
+
+
+   var postbody = encodeURIComponent(postbody);
+  // alert('stickied = '+stickied);
+   //alert('checkbox = '+postwrapping+'stickied id = '+stickiedid);
+    
+   //alert("postcat="+postcat+"&postbody="+postbody+"&postid="+the_id+"&uid="+uid+"&posttitle="+posttitle+"&wrapping="+postwrapping+"&stickied="+stickied);
+   
+        
+   
+    $.ajax({
+      type: "GET",
+      data: "postcat="+postcat+"&postid="+the_id+"&uid="+uid+"&posttitle="+posttitle+"&wrapping="+postwrapping+"&stickied="+stickied+"&postbody="+postbody+"&commentid="+stickiedid,
+  
+      url: "private/submiteditedpost.php",
+      success: function(newvalue)
+      {
+   
+   //$("#new").prop('id', newvalue); //this is a little more elegant
+   
+   $( "#db"+the_id ).load(window.location.href + " #db"+the_id );
+   $("button#"+the_id).hide();
+   //NEED TO FORWARD USER BACK TO POST PAGE
+   window.location.assign('?view=post&postid='+newvalue);
+      } 		});
+   }
+
+
+
+
+
+
+
+   function profilesetr(e) {
+
+/// get userid
+/// get picture
+/// upload user table with profile pic name
+
+
+
+  //  alert('FUCK YOU');
+
+    //var the_id = (event.target.id);//get the id
+    var the_id = (event.target.id);//get the id
+    var uid = $(event.target).attr('uid');
+    var pid = $(event.target).attr('pid');
+    //var uid = $(event.target).prev('input').attr('uid');
+
+    
+    
+    //alert("pic id= "+pid+"&userid = "+uid);
+    
+    
+     $.ajax({
+       type: "GET",
+       data: "pid="+pid+"&uid="+uid,
+    
+       url: "private/updateprofile.php",
+       success: function(newvalue)
+       {
+    
+    //$("#new").prop('id', newvalue); //this is a little more elegant
+   // $( "#db"+type ).load(window.location.href + " #db"+type );
+    //$("button#"+the_id).hide();
+    $("#yourprofilepic").load(location.href + " #yourprofilepic");
+    //$("div#yourprofilepic").load(location.href+" div#yourprofilepic");
+   // $("#yourprofilepic").fadeOut(800, $("#yourprofilepic").html(newvalue).fadeIn().delay(2000));
+
+
+       } 		});
+    }
+  
+
+
+
+
+
+
+    function picdeletr(e) {
+
+          //  alert('FUCK YOU');
+      
+            //var the_id = (event.target.id);//get the id
+            //var the_id = (event.target.id);//get the id
+            var uid = $(event.target).attr('uid');
+            var uld = $(event.target).attr('uld');
+            var pid = $(event.target).attr('pid');
+            //var uid = $(event.target).prev('input').attr('uid');
+      
+                         
+            //alert("pic id= "+pid+"&userid = "+uid+"&user dir = "+uld);
+            
+            
+             $.ajax({
+               type: "GET",
+               data: "pid="+pid+"&uid="+uid+"&uld="+uld,
+            
+               url: "private/picdeleter.php",
+               success: function(newvalue)
+               {
+            
+
+            $("#picbunch").load(location.href + " #picbunch");
+
+             
+               } 		});
+            }
+  
+            
+
+
+
+
+
+            function clippr(e) {
+              var copied =  $(event.target).attr('txtcopy');
+              alert (copied+"\nFUCK YOU\nTHIS DOES NOT WORK YET");
+
+            
+             //copied.select();
+             // document.execCommand("copy");
+              
+              
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+function searchr(e) {
+  //alert('FUCK YOU');
+
+  var the_id = (event.target.id);//get the id
+  var searchstring = $("#search").val();
+  
+  //alert("postid="+the_id+"&searchstring="+searchstring);
+ 
+     var url = "index.php?view=private/dosearch&searchstring="+searchstring;
+     $(location).attr('href',url);
+  }
+  
+  
+
+
+
+//Hack for pressing enter key on search
+  function keyp(){ 
+        var id = event.key || event.which || event.keyCode || 0;   
+        var value=$("input#search").val();
+       // alert("FUCK="+id+"text= "+value);
+        if (id == "Enter") {
+         // alert("balls="+id);
+            $('button#search').trigger('click');
+        }
+    }
+
+
+
+function isEmail(email) {
+  //var regex = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*(\+[a-z0-9-]+)?@[a-z0-9-]+(\.[a-z0-9-]+)*$/i;
+   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,6})+$/;
+   //var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  return regex.test(email);
+}
+
+
+
+
+
+function catupdatr(e) {
+
+  //  alert('FUCK YOU');
+
+    var the_id = (event.target.id);
+    var cid = $(event.target).attr('cid');
+    var uid = $(event.target).attr('uid');
+    var catname = $('input#'+the_id).val();
+    var catdesc = $('input#'+the_id+"desc").val();
+    //var catname = $(event.target).val();
+
+    //var cid = $("input").attr('cid'); 
+
+    
+    //uid = $(event.target).prev('input').attr('uid');
+                 
+    alert("cat id= "+cid+"&userid = "+uid+"&catname = "+catname+"&catdesc = "+catdesc);
+    
+    
+     $.ajax({
+       type: "GET",
+       data: "catname="+catname+"&cid="+cid+"&uid="+uid+"&catdesc="+catdesc,
+    
+       url: "private/catupdater.php",
+       success: function(newvalue)
+       {
+    
+
+    //$("#catbunch").load(location.href + " #catbunch");
+    //$( "#catbunch"+cid ).load(window.location.href + " #catbunch"+cid );
+    $("button#"+the_id).hide();
+     
+       } 		});
+    }
+
+   
+
+function newcatr(e) {
+
+    var the_id = (event.target.id);
+    var uid = $(event.target).attr('uid');
+    var catname = $('input#'+the_id).val();
+                  
+    alert(" &userid = "+uid+" &catname = "+catname+" &id= "+the_id);
+    
+    
+     $.ajax({
+       type: "GET",
+       data: "catname="+catname+"&uid="+uid+"&id="+the_id,
+    
+       url: "private/catupdater.php",
+       success: function(newvalue)
+       {
+    
+
+    $("#catbunch").load(location.href + " #catbunch");
+    //$( "#catbunch"+cid ).load(window.location.href + " #catbunch"+cid );
+    $("button#"+the_id).hide();
+     
+       } 		});
+    }
+ 
+
+
+    function catmovr(e) {
+
+      var the_id = (event.target.id);
+      var uid = $(event.target).attr('uid');
+      //var nid = $(event.target).attr('nid');
+      var nid = $("#moveposts option:selected").val();
+      var cid = $(event.target).attr('cid');
+                     
+      alert(" &userid = "+uid+" &New ID = "+nid+"&cid="+cid+" &id= "+the_id);
+       
+       $.ajax({
+         type: "GET",
+         data:  "uid="+uid+"&nid="+nid+"&cid="+cid+"&id="+the_id,
+      
+         url: "private/catmover.php",
+         success: function(newvalue)
+         {
+       
+      $("#catbunch").load(location.href + " #catbunch");
+      //$( "#catbunch"+cid ).load(window.location.href + " #catbunch"+cid );
+      $("button#"+the_id).hide();
+       
+         } 		});
+      }
+   
+
+
+
+
+
+      function catdeletr(e) {
+
+        var the_id = (event.target.id);
+        var cid = $(event.target).attr('cid');
+        var uid = $(event.target).attr('uid');
+        var pcount = $(event.target).attr('pcount');
+      //  var catname = $('input#'+the_id).val();
+                      
+       alert(" &userid = "+uid+"& CID = "+cid+" &pcount = "+pcount+" &id= "+the_id);
+        
+         $.ajax({
+           type: "GET",
+           data: "pcount="+pcount+"&uid="+uid+"&id="+the_id+"&cid="+cid,
+        
+           url: "private/catdeleter.php",
+           success: function(newvalue)
+           {
+        
+    
+        $("#catbunch").load(location.href + " #catbunch");
+        //$( "#catbunch"+cid ).load(window.location.href + " #catbunch"+cid );
+        $("button#"+the_id).hide();
+         
+           } 		});
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+function blurbr(e) {
+  alert('FUCK YOU');
+
+  var the_id = (event.target.id);//get the id
+  var profileblurb = $.trim($("#profileblurb").val());
+  var bid = $(event.target).attr('bid');
+  var uid = $(event.target).attr('uid');
+  
+  alert("ID = "+the_id+" &profileblurb="+profileblurb+" &userid="+uid+" &blurbid ="+bid);
+  
+  
+  
+  
+  
+    $.ajax({
+      type: "GET",
+      data: "id="+the_id+"&profileblurb="+profileblurb+"&uid="+uid+"&bid="+bid,
+  
+      url: "private/blurbupdater.php",
+      success: function(newvalue)
+      {
+  
+        $("#profileblurb").load(location.href + " #profileblurb");
+  $("button#"+the_id).hide();
+  
+      } 		});
+  }
+  
+          
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+return new bootstrap.Tooltip(tooltipTriggerEl)
+});
